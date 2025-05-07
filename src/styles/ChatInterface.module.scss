@@ -1,0 +1,274 @@
+// Variables
+$primary-gradient: linear-gradient(135deg, #ff8c00 0%, #ffd700 100%);
+$dark-bg: #111111;
+$darker-bg: #0a0a0a;
+$card-bg: #1a1a1a;
+$border-color: #333333;
+$text-primary: #ffffff;
+$text-secondary: #a0a0a0;
+$error-color: #ff4444;
+$accent-color: #ff8c00;
+
+// Typography
+$font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin button-base {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-family: $font-family;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Styles
+.loadingScreen {
+  @include flex-center;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 2rem;
+  background: $dark-bg;
+  color: $text-primary;
+  text-align: center;
+  font-family: $font-family;
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    font-weight: 800;
+    background: $primary-gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+  }
+}
+
+.loadingContainer {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 2rem;
+
+  .errorMessage {
+    background: rgba($error-color, 0.1);
+    border: 1px solid $error-color;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+    color: $text-primary;
+
+    p {
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .retryButton {
+      @include button-base;
+      background: $error-color;
+      color: $text-primary;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+
+      &:hover {
+        background: darken($error-color, 10%);
+      }
+    }
+  }
+
+  .progressBar {
+    width: 100%;
+    height: 8px;
+    background: rgba($text-primary, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+
+    .progressFill {
+      height: 100%;
+      background: $primary-gradient;
+      transition: width 0.3s ease;
+    }
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: $text-secondary;
+    font-weight: 500;
+  }
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: $dark-bg;
+  font-family: $font-family;
+}
+
+.personalitySelector {
+  padding: 1rem;
+  background: $darker-bg;
+  border-bottom: 1px solid $border-color;
+  text-align: center;
+
+  .personalitySelect {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid $border-color;
+    font-size: 1rem;
+    font-weight: 500;
+    background: $card-bg;
+    color: $text-primary;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: $accent-color;
+      box-shadow: 0 0 0 2px rgba($accent-color, 0.2);
+    }
+
+    option {
+      background: $card-bg;
+      color: $text-primary;
+    }
+  }
+}
+
+.messagesContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $darker-bg;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $border-color;
+    border-radius: 4px;
+  }
+}
+
+.message {
+  max-width: 80%;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  animation: fadeIn 0.3s ease;
+  font-weight: 500;
+
+  &.userMessage {
+    align-self: flex-end;
+    background: $primary-gradient;
+    color: $text-primary;
+  }
+
+  &.aiMessage {
+    align-self: flex-start;
+    background: $card-bg;
+    border: 1px solid $border-color;
+    color: $text-primary;
+  }
+
+  &.errorMessage {
+    background: $error-color;
+    color: $text-primary;
+  }
+
+  .messageContent {
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+}
+
+.inputContainer {
+  padding: 1.5rem;
+  background: $darker-bg;
+  border-top: 1px solid $border-color;
+  display: flex;
+  gap: 1rem;
+
+  .messageInput {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: 1px solid $border-color;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    background: $card-bg;
+    color: $text-primary;
+    outline: none;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: $text-secondary;
+    }
+
+    &:focus {
+      border-color: $accent-color;
+      box-shadow: 0 0 0 2px rgba($accent-color, 0.2);
+    }
+
+    &:disabled {
+      background: $darker-bg;
+      cursor: not-allowed;
+    }
+  }
+
+  .sendButton {
+    @include button-base;
+    background: $primary-gradient;
+    color: $text-primary;
+    font-weight: 600;
+    padding: 1rem 2rem;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($accent-color, 0.3);
+    }
+  }
+}
+
+.offlineBanner {
+  background: rgba($accent-color, 0.1);
+  border: 1px solid $accent-color;
+  color: $text-primary;
+  padding: 0.75rem;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border-radius: 0.5rem;
+  margin: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} 
