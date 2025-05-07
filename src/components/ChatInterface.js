@@ -80,6 +80,7 @@ const ChatInterface = () => {
 
     try {
       const response = await ollamaService.generateResponse(userMessage, selectedPersonality);
+      console.log('Response received:', response);
       setMessages(prev => [...prev, { text: response, sender: 'ai' }]);
     } catch (error) {
       console.error('Error generating response:', error);

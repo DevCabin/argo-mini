@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.3] - 2024-03-07
+
+### Stable Release
+- Fixed streaming response handling from Ollama API
+- Improved error handling and response parsing
+- Cleaned up unused code and dependencies
+- Fixed Next.js component issues
+- Stable chat functionality with proper response display
+
+### Improvements
+- Simplified Ollama service implementation
+- Removed unused WebAssembly configuration
+- Streamlined personality configurations
+- Fixed React component declarations
+- Improved error messages and handling
+
 ## [1.0.0] - 2024-03-07
 
 ### Added
