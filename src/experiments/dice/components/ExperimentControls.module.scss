@@ -1,0 +1,29 @@
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: rgba(#333, 0.2);
+  border-radius: 0.5rem;
+
+  .clearButton {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    background: rgba(#ff4444, 0.1);
+    color: #ff4444;
+    border: 1px solid #ff4444;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #ff4444;
+      color: white;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+} 

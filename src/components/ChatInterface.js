@@ -6,6 +6,8 @@ import Link from 'next/link';
 import styles from '../styles/ChatInterface.module.scss';
 import personalityConfig from '../data/personality.json';
 import { ollamaService } from '../utils/ollama';
+import { dbService } from '../utils/db';
+import { getExperimentContext } from '../experiments/registry';
 
 const ChatInterface = () => {
   const [modelLoaded, setModelLoaded] = useState(false);
@@ -19,6 +21,39 @@ const ChatInterface = () => {
   const [isOffline, setIsOffline] = useState(false);
   const messagesEndRef = useRef(null);
   const router = useRouter();
+
+  // Load chat history on mount
+  useEffect(() => {
+    const loadChatHistory = async () => {
+      try {
+        const recentConversations = await dbService.getRecentConversations(1);
+        if (recentConversations.length > 0) {
+          setMessages(recentConversations[0].messages);
+        }
+      } catch (error) {
+        console.error('Error loading chat history:', error);
+      }
+    };
+    loadChatHistory();
+  }, []);
+
+  // Save chat history when messages change
+  useEffect(() => {
+    const saveChatHistory = async () => {
+      if (messages.length > 0 && selectedPersonality) {
+        try {
+          await dbService.saveConversation({
+            messages,
+            personalityId: selectedPersonality.id,
+            modelId: personalityConfig.defaultModel
+          });
+        } catch (error) {
+          console.error('Error saving chat history:', error);
+        }
+      }
+    };
+    saveChatHistory();
+  }, [messages, selectedPersonality]);
 
   // Load personalities from localStorage
   useEffect(() => {
@@ -88,14 +123,23 @@ const ChatInterface = () => {
 
     const userMessage = inputMessage.trim();
     setInputMessage('');
-    setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
+    const newMessages = [...messages, { text: userMessage, sender: 'user' }];
+    setMessages(newMessages);
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await ollamaService.generateResponse(userMessage, selectedPersonality);
-      console.log('Response received:', response);
-      setMessages(prev => [...prev, { text: response, sender: 'ai' }]);
+      // Check for experiment context
+      let contextualPrompt = userMessage;
+      const experimentContext = await getExperimentContext(userMessage);
+      
+      if (experimentContext) {
+        contextualPrompt = `${experimentContext}\n\nPlease use this data to answer the following question: ${userMessage}`;
+      }
+
+      const response = await ollamaService.generateResponse(contextualPrompt, selectedPersonality);
+      const updatedMessages = [...newMessages, { text: response, sender: 'ai' }];
+      setMessages(updatedMessages);
     } catch (error) {
       console.error('Error generating response:', error);
       setError(error.message);

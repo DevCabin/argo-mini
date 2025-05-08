@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.7.0] - 2024-03-07
+
+### Added
+- Enhanced dice rolling experiment with auto-roll feature
+- Added cryptographic random number generation option
+- Implemented batch processing for multiple rolls
+- Added UI toggle between Math.random() and crypto.getRandomValues()
+- Improved experiment statistics display
+
+### Improvements
+- Optimized IndexedDB operations for batch processing
+- Enhanced UI responsiveness during auto-rolling
+- Added visual feedback for RNG method selection
+- Improved error handling in experiment components
+- Updated documentation for experiment features
+
 ## [1.3.5] - 2024-03-07
 
 ### Added

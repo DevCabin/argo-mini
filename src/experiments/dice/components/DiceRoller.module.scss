@@ -1,0 +1,141 @@
+.diceRoller {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  
+  .dice {
+    font-size: 4rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    
+    &:hover {
+      transform: scale(1.1);
+    }
+    
+    &.rolling {
+      animation: roll 0.5s ease infinite;
+    }
+  }
+  
+  .rollButton {
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background-color: #357abd;
+    }
+    
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@keyframes roll {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.diceSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(#000, 0.1);
+  border-radius: 0.75rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.rollButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.autoRollButton {
+    background: linear-gradient(135deg, #e24a4a 0%, #bd3535 100%);
+    min-width: 150px;
+
+    &:hover:not(:disabled) {
+      box-shadow: 0 4px 12px rgba(226, 74, 74, 0.3);
+    }
+  }
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(#000, 0.05);
+  border-radius: 0.5rem;
+}
+
+.cryptoToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+
+  input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+}
+
+.rngInfo {
+  font-size: 0.9rem;
+  color: rgba(#fff, 0.7);
+  font-family: monospace;
+  padding: 0.5rem;
+  background: rgba(#000, 0.2);
+  border-radius: 0.25rem;
+}
+
+.lastRoll {
+  font-size: 1.2rem;
+  
+  span {
+    color: #4a90e2;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+  }
+} 

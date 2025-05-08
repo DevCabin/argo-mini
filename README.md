@@ -1,4 +1,4 @@
-# AI Chat - Local LLM Assistant
+# AI Chat - Local LLM Assistant (v1.7.0)
 
 A standalone AI chat application that runs locally in your browser, powered by Ollama. This application provides a modern, responsive interface for interacting with local language models, with support for multiple personalities and offline operation.
 
@@ -11,7 +11,11 @@ A standalone AI chat application that runs locally in your browser, powered by O
 - 🎨 **Modern UI**: Clean, responsive dark theme interface
 - 📱 **Mobile Friendly**: Works great on both desktop and mobile devices
 - 📊 **Data Persistence**: Uses IndexedDB for storing chat history and experimental data
-- 🧪 **Experiments**: Interactive features like dice rolling with statistics
+- 🧪 **Experiments**: Interactive features including:
+  - Dice rolling with real-time statistics
+  - Auto-roll functionality (100 rolls in batches)
+  - Choice of random number generators (Math.random or crypto.getRandomValues)
+  - Distribution visualization and history tracking
 
 ## Prerequisites
 
@@ -72,6 +76,22 @@ A standalone AI chat application that runs locally in your browser, powered by O
    - Access experimental features from the navigation menu
    - Try the interactive dice roller with real-time statistics
    - View distribution visualizations and history
+
+## Experiments
+
+### Dice Roller
+The dice rolling experiment provides statistical analysis of random number generation:
+
+- **Manual Rolling**: Click to roll a single die
+- **Auto-Roll**: Perform 100 rolls automatically in optimized batches
+- **RNG Options**:
+  - Standard (Math.random): Fast, pseudo-random generation
+  - Cryptographic (crypto.getRandomValues): True random generation
+- **Statistics**:
+  - Real-time distribution visualization
+  - Roll history with timestamps
+  - Percentage-based analysis
+  - Most frequent number tracking
 
 ## Data Storage
 

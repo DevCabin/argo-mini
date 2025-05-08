@@ -4,12 +4,19 @@ const DB_VERSION = 1;
 class DatabaseService {
   constructor() {
     this.db = null;
-    this.initDatabase();
+    if (typeof window !== 'undefined') {
+      this.initDatabase();
+    }
   }
 
   initDatabase() {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open(DB_NAME, DB_VERSION);
+      if (typeof window === 'undefined') {
+        resolve(null);
+        return;
+      }
+
+      const request = window.indexedDB.open(DB_NAME, DB_VERSION);
 
       request.onerror = () => reject(request.error);
       request.onsuccess = () => {
@@ -48,7 +55,10 @@ class DatabaseService {
 
   // Chat History Methods
   async saveConversation(conversation) {
-    const db = await this.initDatabase();
+    if (!this.db) {
+      if (typeof window === 'undefined') return null;
+      await this.initDatabase();
+    }
     // Create searchable text from all messages
     const searchText = conversation.messages
       .map(msg => msg.content)
@@ -56,7 +66,7 @@ class DatabaseService {
       .toLowerCase();
 
     return new Promise((resolve, reject) => {
-      const transaction = db.transaction(['conversations'], 'readwrite');
+      const transaction = this.db.transaction(['conversations'], 'readwrite');
       const store = transaction.objectStore('conversations');
       const request = store.add({
         ...conversation,
@@ -168,6 +178,20 @@ class DatabaseService {
         });
 
         resolve(stats);
+      };
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async clearExperimentalData() {
+    const db = await this.initDatabase();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(['diceRolls'], 'readwrite');
+      const store = transaction.objectStore('diceRolls');
+      const request = store.clear();
+
+      request.onsuccess = () => {
+        resolve();
       };
       request.onerror = () => reject(request.error);
     });
