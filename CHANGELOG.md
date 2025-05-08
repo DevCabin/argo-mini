@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.3.5] - 2024-03-07
+
+### Added
+- Implemented IndexedDB for persistent data storage
+- Added experimental features section
+- Added interactive dice roller with statistics
+- Added conversation history storage capability
+
+### Improvements
+- Reduced personality options to two focused profiles
+- Added experiments page with navigation
+- Added distribution visualization for dice rolls
+- Improved header navigation with multiple links
+- Added persistent storage for chat history and experiments
+
+## [1.3.4] - 2024-03-07
+
+### Improvements
+- Added localStorage-based personality settings
+- Added options page for editing personality configurations
+- Added Reset to Default functionality
+- Removed API routes in favor of client-side storage
+- Fixed styling consistency in options page header buttons
+- Improved personality settings persistence across sessions
+
 ## [1.3.3] - 2024-03-07
 
 ### Stable Release

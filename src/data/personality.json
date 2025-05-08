@@ -9,13 +9,33 @@
       "maxTokens": 2000
     },
     {
-      "id": "professional",
-      "name": "Professional",
-      "description": "A formal and business-oriented AI",
-      "systemPrompt": "You are a professional and formal AI assistant. You communicate in a clear, concise, and business-appropriate manner. You focus on accuracy and professionalism in all interactions.",
-      "temperature": 0.5,
-      "maxTokens": 2000
+      "id": "creative",
+      "name": "Creative Mode",
+      "description": "High temperature creative assistant",
+      "systemPrompt": "You are a creative, imaginative AI assistant. You provide detailed, innovative responses while maintaining accuracy. You excel at creative tasks, brainstorming, and thinking outside the box.",
+      "temperature": 0.9,
+      "maxTokens": 4000
     }
   ],
-  "defaultModel": "llama2"
+  "defaultModel": "llama2",
+  "availableModels": [
+    {
+      "id": "llama2",
+      "name": "Llama 2 (7B)",
+      "description": "Default balanced model",
+      "size": "3.8GB"
+    },
+    {
+      "id": "mistral",
+      "name": "Mistral 7B",
+      "description": "Excellent performance/size ratio",
+      "size": "4.1GB"
+    },
+    {
+      "id": "orca-mini",
+      "name": "Orca Mini",
+      "description": "Fast, lightweight model",
+      "size": "1.5GB"
+    }
+  ]
 } 

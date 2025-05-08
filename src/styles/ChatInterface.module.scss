@@ -123,6 +123,10 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sa
   background: $darker-bg;
   border-bottom: 1px solid $border-color;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 
   .personalitySelect {
     padding: 0.75rem 1.5rem;
@@ -143,6 +147,27 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sa
 
     option {
       background: $card-bg;
+      color: $text-primary;
+    }
+  }
+
+  .links {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .settingsLink {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background: $card-bg;
+    color: $text-secondary;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: lighten($card-bg, 5%);
       color: $text-primary;
     }
   }

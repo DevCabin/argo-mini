@@ -2,13 +2,15 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import styles from '../styles/ChatInterface.module.scss';
 import personalityConfig from '../data/personality.json';
 import { ollamaService } from '../utils/ollama';
 
 const ChatInterface = () => {
   const [modelLoaded, setModelLoaded] = useState(false);
-  const [selectedPersonality, setSelectedPersonality] = useState(personalityConfig.personalities[0]);
+  const [personalities, setPersonalities] = useState(personalityConfig.personalities);
+  const [selectedPersonality, setSelectedPersonality] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +19,18 @@ const ChatInterface = () => {
   const [isOffline, setIsOffline] = useState(false);
   const messagesEndRef = useRef(null);
   const router = useRouter();
+
+  // Load personalities from localStorage
+  useEffect(() => {
+    const savedPersonalities = localStorage.getItem('personalities');
+    if (savedPersonalities) {
+      const parsed = JSON.parse(savedPersonalities);
+      setPersonalities(parsed);
+      setSelectedPersonality(parsed[0]); // Set first personality as default
+    } else {
+      setSelectedPersonality(personalityConfig.personalities[0]); // Set default if no saved data
+    }
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -135,21 +149,29 @@ const ChatInterface = () => {
       )}
       <div className={styles.personalitySelector}>
         <select
-          value={selectedPersonality.id}
+          value={selectedPersonality?.id}
           onChange={(e) => {
-            const personality = personalityConfig.personalities.find(
+            const personality = personalities.find(
               p => p.id === e.target.value
             );
             setSelectedPersonality(personality);
           }}
           className={styles.personalitySelect}
         >
-          {personalityConfig.personalities.map((personality) => (
+          {personalities.map((personality) => (
             <option key={personality.id} value={personality.id}>
               {personality.name}
             </option>
           ))}
         </select>
+        <div className={styles.links}>
+          <Link href="/options" className={styles.settingsLink}>
+            Settings
+          </Link>
+          <Link href="/experiments" className={styles.settingsLink}>
+            Experiments
+          </Link>
+        </div>
       </div>
 
       <div className={styles.messagesContainer}>

@@ -10,12 +10,15 @@ A standalone AI chat application that runs locally in your browser, powered by O
 - 🧠 **Context Awareness**: Maintains conversation context for more coherent responses
 - 🎨 **Modern UI**: Clean, responsive dark theme interface
 - 📱 **Mobile Friendly**: Works great on both desktop and mobile devices
+- 📊 **Data Persistence**: Uses IndexedDB for storing chat history and experimental data
+- 🧪 **Experiments**: Interactive features like dice rolling with statistics
 
 ## Prerequisites
 
 - Node.js 18 or higher
 - Ollama installed locally
 - At least 8GB RAM recommended for model loading
+- Modern browser with IndexedDB support
 
 ## Installation
 
@@ -65,6 +68,45 @@ A standalone AI chat application that runs locally in your browser, powered by O
    - An "Offline" indicator will show when you're not connected to the internet
    - All processing continues to work locally
 
+4. **Experiments**:
+   - Access experimental features from the navigation menu
+   - Try the interactive dice roller with real-time statistics
+   - View distribution visualizations and history
+
+## Data Storage
+
+The application uses IndexedDB for persistent storage:
+
+### Chat History
+```javascript
+{
+  conversations: {
+    id: auto-increment,
+    timestamp: Date,
+    modelId: string,
+    personalityId: string,
+    messages: [
+      {
+        role: 'user' | 'ai',
+        content: string,
+        timestamp: Date
+      }
+    ]
+  }
+}
+```
+
+### Experimental Data
+```javascript
+{
+  diceRolls: {
+    id: auto-increment,
+    value: number,
+    timestamp: Date
+  }
+}
+```
+
 ## Configuration
 
 ### Personalities
@@ -91,18 +133,14 @@ Model settings can be adjusted in the same file:
 
 ```json
 {
-  "modelSettings": {
-    "defaultTemperature": 0.7,
-    "defaultMaxTokens": 2000,
-    "availableModels": [
-      {
-        "id": "llama2",
-        "name": "Llama 2",
-        "size": "7B",
-        "description": "Meta's open source model"
-      }
-    ]
-  }
+  "availableModels": [
+    {
+      "id": "llama2",
+      "name": "Llama 2 (7B)",
+      "description": "Default balanced model",
+      "size": "3.8GB"
+    }
+  ]
 }
 ```
 
@@ -128,4 +166,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [Ollama](https://ollama.ai) for the local LLM server
 - [Next.js](https://nextjs.org) for the React framework
-- [React](https://reactjs.org) for the UI library 
+- [React](https://reactjs.org) for the UI library
+- [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) for client-side storage 
