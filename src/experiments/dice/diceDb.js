@@ -4,7 +4,8 @@ class DiceExperimentDb {
   constructor() {
     this.dbName = 'ExperimentsDB';
     this.storeName = `experiment_${EXPERIMENT_ID}`;
-    this.version = 1;
+    this.sessionStoreName = 'session_data';
+    this.version = 2; // Increment version to trigger upgrade
     this.db = null;
   }
 
@@ -30,7 +31,34 @@ class DiceExperimentDb {
           store.createIndex('timestamp', 'timestamp');
           store.createIndex('value', 'value');
         }
+        if (!db.objectStoreNames.contains(this.sessionStoreName)) {
+          db.createObjectStore(this.sessionStoreName);
+        }
       };
+    });
+  }
+
+  async getSessionRoll() {
+    const db = await this.initDatabase();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([this.sessionStoreName], 'readonly');
+      const store = transaction.objectStore(this.sessionStoreName);
+      const request = store.get('currentRoll');
+
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async saveSessionRoll(roll) {
+    const db = await this.initDatabase();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([this.sessionStoreName], 'readwrite');
+      const store = transaction.objectStore(this.sessionStoreName);
+      const request = store.put(roll, 'currentRoll');
+
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
     });
   }
 
@@ -111,26 +139,8 @@ class DiceExperimentDb {
 
   // Helper method to get experiment data for AI context
   async getExperimentContext() {
-    const stats = await this.getDiceRollStats();
-    if (stats.total === 0) {
-      return "No dice rolls have been recorded yet.";
-    }
-
-    // Find the highest count and sort by frequency
-    const distributionWithNumbers = stats.distribution
-      .map((count, i) => ({ number: i + 1, count }))
-      .sort((a, b) => b.count - a.count); // Sort by count descending
-
-    const maxCount = distributionWithNumbers[0].count;
-    const winningNumbers = distributionWithNumbers.filter(item => item.count === maxCount);
-
-    return `Here is the current dice roll experiment data (higher numbers of rolls means more frequent):
-- Total rolls: ${stats.total}
-- Distribution of rolls (sorted by frequency, highest to lowest):
-${distributionWithNumbers.map(({number, count}) => 
-  `  Number ${number}: ${count} times (${((count / stats.total) * 100).toFixed(1)}%)`
-).join('\n')}
-- Most frequent roll(s): ${winningNumbers.map(w => `Number ${w.number} (${w.count} times)`).join(', ')}`;
+    const roll = await this.getSessionRoll();
+    return roll ? { currentSessionRoll: roll } : null;
   }
 }
 

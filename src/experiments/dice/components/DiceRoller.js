@@ -24,8 +24,8 @@ export function DiceRoller({ onRoll, lastRoll }) {
     if (isAutoRolling) return;
     
     setIsAutoRolling(true);
-    const totalRolls = 100;
-    const batchSize = 10;
+    const totalRolls = 1000;
+    const batchSize = 25;
     
     try {
       for (let i = 0; i < totalRolls; i += batchSize) {
@@ -36,7 +36,7 @@ export function DiceRoller({ onRoll, lastRoll }) {
           await onRoll(value);
         }
         
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise(resolve => setTimeout(resolve, 25));
       }
     } finally {
       setIsAutoRolling(false);
@@ -54,7 +54,7 @@ export function DiceRoller({ onRoll, lastRoll }) {
           className={`${styles.rollButton} ${styles.autoRollButton}`}
           disabled={isAutoRolling}
         >
-          {isAutoRolling ? 'Rolling...' : 'Auto-Roll (100x)'}
+          {isAutoRolling ? 'Rolling...' : 'Auto-Roll (1000x)'}
         </button>
       </div>
       

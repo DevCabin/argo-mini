@@ -269,4 +269,25 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.headerControls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.rerollButton {
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: #357abd;
+  }
 } 
