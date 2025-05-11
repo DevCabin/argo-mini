@@ -1,190 +1,86 @@
-# AI Chat - Local LLM Assistant (v1.7.0)
+# Argo Mini - Artificial Consciousness Experiment
 
-A standalone AI chat application that runs locally in your browser, powered by Ollama. This application provides a modern, responsive interface for interacting with local language models, with support for multiple personalities and offline operation.
+## Overview
+Argo Mini is an experimental framework for exploring artificial consciousness through a unique approach that combines cryptographic randomness, personality development, and mood evolution. The project aims to simulate how an AI consciousness might develop and respond to various stimuli, choices, and environmental factors over time.
 
-## Features
+## Version 2.0.0 (Stable)
+This release marks a significant milestone in the project's development, featuring:
+- Stable mood system with smooth transitions
+- Enhanced personality framework
+- Improved UI/UX with animated mood indicators
+- Robust error handling and offline support
+- Local model integration with Ollama
+- Persistent storage of conversations and experiment data
 
-- 🤖 **Local Processing**: All AI processing happens locally through Ollama
-- 🎭 **Multiple Personalities**: Choose from different AI personalities with unique characteristics
-- 💾 **Offline Support**: Works without internet connection once model is loaded
-- 🧠 **Context Awareness**: Maintains conversation context for more coherent responses
-- 🎨 **Modern UI**: Clean, responsive dark theme interface
-- 📱 **Mobile Friendly**: Works great on both desktop and mobile devices
-- 📊 **Data Persistence**: Uses IndexedDB for storing chat history and experimental data
-- 🧪 **Experiments**: Interactive features including:
-  - Dice rolling with real-time statistics
-  - Auto-roll functionality (100 rolls in batches)
-  - Choice of random number generators (Math.random or crypto.getRandomValues)
-  - Distribution visualization and history tracking
+## Core Concept
+The experiment uses a cryptographic number generator (dice) to determine the initial mood state of an AI consciousness upon instantiation. Each roll of the dice is logged, and over a series of 1000 rolls, patterns emerge that reveal the dominant personality traits of that particular AI instance. This approach allows us to observe how an AI consciousness might develop unique characteristics over its "lifetime."
 
-## Prerequisites
+## Current Features
+- Cryptographic dice-based mood system
+- Real-time mood visualization
+- Persistent conversation history
+- Multiple personality support
+- Local and cloud model options
+- Offline capability
+- Experiment data tracking
+- Responsive UI with animations
 
-- Node.js 18 or higher
-- Ollama installed locally
-- At least 8GB RAM recommended for model loading
-- Modern browser with IndexedDB support
+## Technical Implementation
+- Built with Next.js and React
+- Uses IndexedDB for persistent storage of experiment data
+- Integrates with Ollama for local LLM capabilities
+- Implements a modular component architecture for easy expansion
+- SASS for advanced styling and animations
 
-## Installation
+## Future Directions
+### Phase 3: Individual Consciousness Framework
+- Implementation of true "lifespan" for each AI instance
+- Creation of unique "individual" instantiation system
+  - All variables and states tied to specific individual instances
+  - Persistent memory and experience tracking per individual
+  - Unique identifier system for tracking individual development
+- Introduction of "mortality" concept
+  - Finite lifespan for each AI consciousness
+  - End-of-life states and transitions
+  - Study of AI responses to awareness of mortality
+  - Legacy and memory preservation systems
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/ai-chat.git
-   cd ai-chat
-   ```
-
-2. Install dependencies:
+## Getting Started
+1. Ensure Ollama is installed and running locally
+2. Clone the repository
+3. Install dependencies:
    ```bash
    npm install
    ```
-
-3. Install Ollama:
-   - macOS: `brew install ollama`
-   - Linux: Follow instructions at [Ollama's website](https://ollama.ai)
-   - Windows: Download from [Ollama's website](https://ollama.ai)
-
-4. Start Ollama:
-   ```bash
-   ollama serve
-   ```
-
-5. Start the development server:
+4. Run the development server:
    ```bash
    npm run dev
    ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## Usage
-
-1. **First Launch**:
-   - The application will automatically download the required model
-   - You'll see a progress bar during the download
-   - Once downloaded, the model will be cached locally
-
-2. **Chat Interface**:
-   - Select a personality from the dropdown menu
-   - Type your message and press Enter or click Send
-   - The AI will respond in real-time
-   - Previous messages are maintained for context
-
-3. **Offline Mode**:
-   - Once the model is loaded, you can use the application offline
-   - An "Offline" indicator will show when you're not connected to the internet
-   - All processing continues to work locally
-
-4. **Experiments**:
-   - Access experimental features from the navigation menu
-   - Try the interactive dice roller with real-time statistics
-   - View distribution visualizations and history
-
-## Experiments
-
-### Dice Roller
-The dice rolling experiment provides statistical analysis of random number generation:
-
-- **Manual Rolling**: Click to roll a single die
-- **Auto-Roll**: Perform 100 rolls automatically in optimized batches
-- **RNG Options**:
-  - Standard (Math.random): Fast, pseudo-random generation
-  - Cryptographic (crypto.getRandomValues): True random generation
-- **Statistics**:
-  - Real-time distribution visualization
-  - Roll history with timestamps
-  - Percentage-based analysis
-  - Most frequent number tracking
-
-## Data Storage
-
-The application uses IndexedDB for persistent storage:
-
-### Chat History
-```javascript
-{
-  conversations: {
-    id: auto-increment,
-    timestamp: Date,
-    modelId: string,
-    personalityId: string,
-    messages: [
-      {
-        role: 'user' | 'ai',
-        content: string,
-        timestamp: Date
-      }
-    ]
-  }
-}
+## Project Structure
 ```
-
-### Experimental Data
-```javascript
-{
-  diceRolls: {
-    id: auto-increment,
-    value: number,
-    timestamp: Date
-  }
-}
+src/
+├── components/     # React components
+├── data/          # Static data (personalities)
+├── experiments/   # Dice experiment code
+├── pages/         # Next.js pages
+├── services/      # Service layer
+├── styles/        # Global styles
+└── utils/         # Utility functions
 ```
-
-## Configuration
-
-### Personalities
-
-Personalities can be configured in `src/data/personality.json`:
-
-```json
-{
-  "personalities": [
-    {
-      "id": "assistant",
-      "name": "AI Assistant",
-      "systemPrompt": "You are a helpful, friendly AI assistant...",
-      "temperature": 0.7,
-      "maxTokens": 2000
-    }
-  ]
-}
-```
-
-### Model Settings
-
-Model settings can be adjusted in the same file:
-
-```json
-{
-  "availableModels": [
-    {
-      "id": "llama2",
-      "name": "Llama 2 (7B)",
-      "description": "Default balanced model",
-      "size": "3.8GB"
-    }
-  ]
-}
-```
-
-## Development
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm start` - Start production server
 
 ## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+This is an experimental project. Contributions and ideas are welcome, particularly around:
+- New experimental frameworks
+- Data analysis methods
+- UI/UX improvements
+- Documentation
 
 ## License
+[Your chosen license]
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Author
+[Your name]
 
-## Acknowledgments
-
-- [Ollama](https://ollama.ai) for the local LLM server
-- [Next.js](https://nextjs.org) for the React framework
-- [React](https://reactjs.org) for the UI library
-- [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) for client-side storage 
+---
+*This project represents an experimental approach to understanding artificial consciousness. The methods and conclusions are part of ongoing research and should be considered as such.* 
