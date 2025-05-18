@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { diceDbService } from '../experiments/dice/diceDb';
+import { moodService } from '../services/moodService';
+import AIFace from './AIFace';
 import styles from './SessionDice.module.scss';
 
 export function SessionDice() {
   const [sessionRoll, setSessionRoll] = useState(null);
+  const [currentMood, setCurrentMood] = useState('happy');
 
   useEffect(() => {
     const initializeSessionRoll = async () => {
@@ -18,16 +21,24 @@ export function SessionDice() {
       }
       
       setSessionRoll(roll);
+      setCurrentMood(moodService.getMoodFromDiceRoll(roll));
     };
 
     initializeSessionRoll();
   }, []);
 
+  const handleMoodChange = (newMood) => {
+    setCurrentMood(newMood);
+  };
+
   if (!sessionRoll) return null;
 
   return (
-    <div className={styles.sessionDice}>
-      <span>Session Roll: {sessionRoll}</span>
+    <div className={styles.container}>
+      <div className={styles.diceDisplay}>
+        <span>Session Roll: {sessionRoll}</span>
+      </div>
+      <AIFace initialMood={currentMood} onMoodChange={handleMoodChange} />
     </div>
   );
 } 

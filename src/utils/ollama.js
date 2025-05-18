@@ -1,4 +1,5 @@
 import axios from 'axios';
+import personalityConfig from '../data/personality.json';
 
 const OLLAMA_API = 'http://localhost:11434/api';
 
@@ -39,21 +40,39 @@ class OllamaService {
     }
   }
 
-  async generateResponse(message, personality) {
+  async generateResponse(message, personality, currentMood) {
     try {
       if (!this.model) {
         throw new Error('No model loaded');
       }
 
-      const response = await axios.post(`${OLLAMA_API}/generate`, {
+      // Get the mood prompt modifier
+      const moodConfig = personalityConfig.moods[currentMood];
+      const moodPrompt = moodConfig ? moodConfig.promptModifier : '';
+
+      // Create the system prompt with mood
+      const systemPrompt = personality.systemPrompt.replace('{moodPrompt}', moodPrompt);
+
+      console.log('Debug - Mood Details:', {
+        currentMood,
+        moodConfig,
+        moodPrompt,
+        systemPrompt
+      });
+
+      const requestBody = {
         model: this.model,
         prompt: message,
-        system: personality.systemPrompt,
+        system: systemPrompt,
         options: {
           temperature: personality.temperature,
           num_predict: personality.maxTokens
         }
-      }, {
+      };
+
+      console.log('Debug - Ollama Request:', requestBody);
+
+      const response = await axios.post(`${OLLAMA_API}/generate`, requestBody, {
         responseType: 'text'
       });
 
@@ -71,6 +90,8 @@ class OllamaService {
           console.error('Error parsing line:', e);
         }
       }
+
+      console.log('Debug - Ollama Response:', fullResponse);
 
       return fullResponse;
     } catch (error) {

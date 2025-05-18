@@ -114,8 +114,23 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sa
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: $dark-bg;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #1a1a1a;
+  color: #fff;
   font-family: $font-family;
+}
+
+.faceSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  background-color: #111;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .personalitySelector {
@@ -149,6 +164,18 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sa
       background: $card-bg;
       color: $text-primary;
     }
+  }
+
+  .moodIndicator {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background: rgba($accent-color, 0.1);
+    color: $accent-color;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid rgba($accent-color, 0.3);
+    text-align: center;
+    animation: fadeIn 0.3s ease;
   }
 
   .links {
@@ -285,6 +312,120 @@ $font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sa
   border-radius: 0.5rem;
   margin: 1rem;
   animation: fadeIn 0.3s ease;
+}
+
+.clearButton {
+  @include button-base;
+  background: $darker-bg;
+  color: $text-secondary;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  border: 1px solid $border-color;
+
+  &:hover {
+    background: darken($darker-bg, 5%);
+    color: $text-primary;
+  }
+}
+
+.controlsContainer {
+  background: $darker-bg;
+  border-bottom: 1px solid $border-color;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.controlsRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.controlSelect {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid $border-color;
+  font-size: 1rem;
+  font-weight: 500;
+  background: $card-bg;
+  color: $text-primary;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+  min-width: 200px;
+
+  &:focus {
+    border-color: $accent-color;
+    box-shadow: 0 0 0 2px rgba($accent-color, 0.2);
+  }
+
+  option {
+    background: $card-bg;
+    color: $text-primary;
+  }
+}
+
+.controlButton {
+  @include button-base;
+  background: $darker-bg;
+  color: $text-secondary;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid $border-color;
+
+  &:hover {
+    background: darken($darker-bg, 5%);
+    color: $text-primary;
+  }
+}
+
+.rollButton {
+  @include button-base;
+  background: $primary-gradient;
+  color: $text-primary;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($accent-color, 0.3);
+  }
+}
+
+.controlLink {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  background: $card-bg;
+  color: $text-secondary;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: lighten($card-bg, 5%);
+    color: $text-primary;
+  }
+}
+
+.moodIndicator {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: rgba($accent-color, 0.1);
+  color: $accent-color;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid rgba($accent-color, 0.3);
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+  margin: 0 auto;
+  width: fit-content;
 }
 
 @keyframes fadeIn {

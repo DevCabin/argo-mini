@@ -196,6 +196,33 @@ class DatabaseService {
       request.onerror = () => reject(request.error);
     });
   }
+
+  async clearCurrentConversation() {
+    if (!this.db) {
+      if (typeof window === 'undefined') return null;
+      await this.initDatabase();
+    }
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction(['conversations'], 'readwrite');
+      const store = transaction.objectStore('conversations');
+      const index = store.index('timestamp');
+      const request = index.openCursor(null, 'prev');
+      
+      request.onsuccess = (event) => {
+        const cursor = event.target.result;
+        if (cursor) {
+          // Delete the most recent conversation
+          store.delete(cursor.primaryKey);
+          resolve();
+        } else {
+          resolve();
+        }
+      };
+      
+      request.onerror = () => reject(request.error);
+    });
+  }
 }
 
 // Create a singleton instance

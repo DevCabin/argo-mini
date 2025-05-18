@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { experiments } from '../experiments/registry';
 import { diceDbService } from '../experiments/dice/diceDb';
+import { RollHistory } from '../components/RollHistory';
 import styles from '../styles/Options.module.scss';
 
 export default function Experiments() {
@@ -32,7 +33,7 @@ export default function Experiments() {
     crypto.getRandomValues(array);
     const roll = (array[0] % 6) + 1;
     await diceDbService.saveSessionRoll(roll);
-    // Force a page reload to update the session roll display
+    await diceDbService.saveDiceRoll(roll); // Save to roll history
     window.location.reload();
   };
 
@@ -55,6 +56,8 @@ export default function Experiments() {
             </Link>
           </div>
         </header>
+
+        <RollHistory />
 
         {loading ? (
           <div className={styles.loading}>Loading experiments...</div>

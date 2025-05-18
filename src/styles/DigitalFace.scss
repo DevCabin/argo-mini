@@ -1,0 +1,46 @@
+.digital-face {
+  background-color: #111;
+  border-radius: 10px;
+  padding: 20px;
+  display: inline-block;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(0, 0, 0, 0.8);
+  border: 3px solid #333;
+}
+
+.pixel-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 2px;
+  width: 160px;
+  height: 160px;
+}
+
+.pixel {
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  transition: background-color 0.05s ease;
+}
+
+.pixel.active {
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+}
+
+/* Add a screen effect with scanlines */
+.digital-face::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.2;
+  border-radius: 10px;
+}

@@ -7,38 +7,36 @@ import personalityConfig from '../data/personality.json';
 export default function Options() {
   const [personalities, setPersonalities] = useState([]);
   const [message, setMessage] = useState('');
-  const [selectedModel, setSelectedModel] = useState(personalityConfig.defaultModel);
-  const [expandedSections, setExpandedSections] = useState({
-    model: true,
-    personalities: false
-  });
+  const [expandedCards, setExpandedCards] = useState({});
 
   // Load personalities from localStorage or default from JSON
   useEffect(() => {
     const savedPersonalities = localStorage.getItem('personalities');
-    const savedModel = localStorage.getItem('selectedModel');
     if (savedPersonalities) {
-      setPersonalities(JSON.parse(savedPersonalities));
+      const parsed = JSON.parse(savedPersonalities);
+      setPersonalities(parsed);
+      // Initialize expanded state for each personality
+      const initialExpanded = {};
+      parsed.forEach(p => {
+        initialExpanded[p.id] = true;
+      });
+      setExpandedCards(initialExpanded);
     } else {
       setPersonalities(personalityConfig.personalities);
-    }
-    if (savedModel) {
-      setSelectedModel(savedModel);
+      // Initialize expanded state for default personalities
+      const initialExpanded = {};
+      personalityConfig.personalities.forEach(p => {
+        initialExpanded[p.id] = true;
+      });
+      setExpandedCards(initialExpanded);
     }
   }, []);
 
-  const toggleSection = (section) => {
-    setExpandedSections(prev => ({
+  const toggleCard = (id) => {
+    setExpandedCards(prev => ({
       ...prev,
-      [section]: !prev[section]
+      [id]: !prev[id]
     }));
-  };
-
-  const handleModelChange = (modelId) => {
-    setSelectedModel(modelId);
-    localStorage.setItem('selectedModel', modelId);
-    setMessage('Model preference saved! Changes will take effect on next restart.');
-    setTimeout(() => setMessage(''), 3000);
   };
 
   const handleChange = (id, field, value) => {
@@ -90,53 +88,22 @@ export default function Options() {
         </header>
 
         <div className={styles.section}>
-          <button 
-            className={styles.sectionHeader} 
-            onClick={() => toggleSection('model')}
-          >
-            <h2>Model Selection</h2>
-            <span className={`${styles.arrow} ${expandedSections.model ? styles.expanded : ''}`}>
-              ▼
-            </span>
-          </button>
-          {expandedSections.model && (
-            <div className={styles.sectionContent}>
-              <div className={styles.modelSelector}>
-                <select
-                  value={selectedModel}
-                  onChange={(e) => handleModelChange(e.target.value)}
-                  className={styles.modelSelect}
+          <h2>Personality Settings</h2>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            {personalities.map((personality) => (
+              <div key={personality.id} className={styles.personalityCard}>
+                <button 
+                  type="button"
+                  className={styles.cardHeader} 
+                  onClick={() => toggleCard(personality.id)}
                 >
-                  {personalityConfig.availableModels.map((model) => (
-                    <option key={model.id} value={model.id}>
-                      {model.name} ({model.size})
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className={styles.modelInfo}>
-                {personalityConfig.availableModels.find(m => m.id === selectedModel)?.description}
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className={styles.section}>
-          <button 
-            className={styles.sectionHeader} 
-            onClick={() => toggleSection('personalities')}
-          >
-            <h2>Personality Settings</h2>
-            <span className={`${styles.arrow} ${expandedSections.personalities ? styles.expanded : ''}`}>
-              ▼
-            </span>
-          </button>
-          {expandedSections.personalities && (
-            <div className={styles.sectionContent}>
-              <form onSubmit={handleSubmit} className={styles.form}>
-                {personalities.map((personality) => (
-                  <div key={personality.id} className={styles.personalityCard}>
-                    <h3>{personality.name}</h3>
+                  <h3>{personality.name}</h3>
+                  <span className={`${styles.arrow} ${expandedCards[personality.id] ? styles.expanded : ''}`}>
+                    ▼
+                  </span>
+                </button>
+                {expandedCards[personality.id] && (
+                  <div className={styles.cardContent}>
                     <div className={styles.field}>
                       <label htmlFor={`${personality.id}-description`}>Description:</label>
                       <input
@@ -182,20 +149,20 @@ export default function Options() {
                       </div>
                     </div>
                   </div>
-                ))}
-                <div className={styles.saveContainer}>
-                  <button type="submit" className={styles.saveButton}>
-                    Save Changes
-                  </button>
-                  {message && (
-                    <div className={`${styles.message} ${message.includes('Error') ? styles.error : styles.success}`}>
-                      {message}
-                    </div>
-                  )}
+                )}
+              </div>
+            ))}
+            <div className={styles.saveContainer}>
+              <button type="submit" className={styles.saveButton}>
+                Save Changes
+              </button>
+              {message && (
+                <div className={`${styles.message} ${message.includes('Error') ? styles.error : styles.success}`}>
+                  {message}
                 </div>
-              </form>
+              )}
             </div>
-          )}
+          </form>
         </div>
       </div>
     </>

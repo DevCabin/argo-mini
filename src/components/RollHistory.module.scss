@@ -1,0 +1,90 @@
+.container {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  max-width: 800px;
+  width: 100%;
+
+  h2 {
+    margin: 0 0 20px 0;
+    color: #333;
+  }
+
+  h3 {
+    margin: 0 0 15px 0;
+    color: #666;
+    font-size: 1.1em;
+  }
+}
+
+.stats {
+  margin-bottom: 30px;
+}
+
+.distribution {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.barContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label {
+  width: 60px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.barWrapper {
+  flex: 1;
+  height: 24px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  background: #4a90e2;
+  border-radius: 12px;
+  transition: width 0.3s ease;
+}
+
+.count {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9em;
+  color: #333;
+}
+
+.recentRolls {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+
+    th, td {
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      font-weight: 600;
+      color: #666;
+    }
+
+    td {
+      color: #333;
+    }
+  }
+} 
