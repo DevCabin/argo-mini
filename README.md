@@ -82,5 +82,18 @@ This is an experimental project. Contributions and ideas are welcome, particular
 ## Author
 [Your name]
 
+## Experimental Framework
+
+The core of this experiment revolves around a simple dice roll (1-6) to determine the AI's current mood. This mood then influences its responses and displayed persona. The mappings are as follows:
+
+- **Roll 1:** Angry/Aggressive
+- **Roll 2:** Anxious/Fearful
+- **Roll 3:** Sad/Depressive
+- **Roll 4:** Calm/Peaceful
+- **Roll 5:** Happy/Joyous
+- **Roll 6:** Energetic/Excited
+
+### Dominant Personality (Long-Term Experiment)
+
 ---
 *This project represents an experimental approach to understanding artificial consciousness. The methods and conclusions are part of ongoing research and should be considered as such.* 

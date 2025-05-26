@@ -99,30 +99,82 @@ const ChatInterface = () => {
   }, []);
 
   useEffect(() => {
-    // Check if a model is already loaded
-    const checkModel = async () => {
+    // Check if a model is already loaded or load the default local model
+    const checkOrLoadInitialModel = async () => {
       try {
         setError(null);
-        const isLoaded = await ollamaService.isModelLoaded();
-        if (isLoaded) {
+        const currentOllamaModelLoaded = await ollamaService.isModelLoaded();
+        const defaultModelConfig = personalityConfig.availableModels.find(m => m.id === personalityConfig.defaultModel);
+
+        if (currentOllamaModelLoaded && ollamaService.model && ollamaService.model.startsWith(selectedModel)) {
+          // If a model is loaded and it matches the selected model (which defaults to defaultModel)
           setModelLoaded(true);
-        } else {
-          // Load the model if not already loaded
+          return;
+        }
+
+        if (defaultModelConfig && defaultModelConfig.type === 'local') {
           setIsLoading(true);
-          await ollamaService.loadModel('llama2', (progress) => {
+          setLoadingProgress(0);
+          await ollamaService.loadModel(defaultModelConfig.id, (progress) => {
             setLoadingProgress(progress);
           });
           setModelLoaded(true);
+          // Explicitly set selectedModel to the one we just loaded if it wasn't already
+          setSelectedModel(defaultModelConfig.id);
+        } else if (defaultModelConfig && defaultModelConfig.type === 'openai') {
+          // For OpenAI models, no explicit loading step here, just mark as loaded
+          setModelLoaded(true);
+        } else {
+          // No default model or unknown type, assume loaded or handle error
+          setModelLoaded(true); 
         }
       } catch (error) {
-        console.error('Error checking model status:', error);
+        console.error('Error initializing model status:', error);
         setError(error.message);
       } finally {
         setIsLoading(false);
       }
     };
-    checkModel();
-  }, []);
+    checkOrLoadInitialModel();
+  }, []); // Runs only on mount
+
+  // Effect to load selected local model if it changes
+  useEffect(() => {
+    const loadSelectedLocalModel = async () => {
+      const modelConfig = personalityConfig.availableModels.find(m => m.id === selectedModel);
+      if (modelConfig && modelConfig.type === 'local') {
+        // Check if this model is already the one loaded in ollamaService
+        if (ollamaService.model && ollamaService.model.startsWith(modelConfig.id)) {
+          setModelLoaded(true); // Already loaded or matches current
+          return;
+        }
+        try {
+          setIsLoading(true);
+          setError(null);
+          setLoadingProgress(0);
+          await ollamaService.loadModel(modelConfig.id, (progress) => {
+            setLoadingProgress(progress);
+          });
+          setModelLoaded(true);
+        } catch (error) {
+          console.error(`Error loading selected model ${modelConfig.id}:`, error);
+          setError(error.message);
+          // Optionally, revert to a default model or previous model if loading fails
+        } finally {
+          setIsLoading(false);
+        }
+      } else if (modelConfig && modelConfig.type === 'openai') {
+        // For OpenAI models, no client-side loading, just ensure modelLoaded is true
+        setModelLoaded(true);
+        setIsLoading(false); // Not technically loading anything client-side
+        setError(null);
+      }
+    };
+
+    if (selectedModel) { // Only run if a model is actually selected
+      loadSelectedLocalModel();
+    }
+  }, [selectedModel]);
 
   // Add effect to handle mood indicator fade
   useEffect(() => {
@@ -152,16 +204,12 @@ const ChatInterface = () => {
       await diceDbService.saveSessionRoll(roll);
       await diceDbService.saveDiceRoll(roll);
       
-      // Update the current mood
-      setCurrentMood(roll);
-      
-      // Force a re-render of the AIFace component
-      const newMood = roll.toString();
-      setCurrentMood(newMood);
+      const newMoodString = roll.toString();
+      setCurrentMood(newMoodString);
       
       console.log('Debug - New Roll:', {
         roll,
-        currentMood: newMood
+        currentMood: newMoodString
       });
     } catch (error) {
       console.error('Error rolling dice:', error);
@@ -182,16 +230,21 @@ const ChatInterface = () => {
 
     try {
       // Check for experiment context
+      const experimentContext = await getExperimentContext();
+      const sessionRollNumber = experimentContext?.currentSessionRoll || 1;
+      const sessionMoodString = sessionRollNumber.toString();
+      setCurrentMood(sessionMoodString);
+
       let contextualPrompt = userMessage;
-      const experimentContext = await getExperimentContext(userMessage);
-      
-      // Get the current session roll from the experiment context
-      const sessionRoll = experimentContext?.currentSessionRoll || 1;
-      setCurrentMood(sessionRoll);
+
+      if (experimentContext) {
+        // This block is a no-op for contextualPrompt, which is intended.
+        // The mood is handled by passing sessionRollNumber (the number) to the AI service.
+      }
       
       console.log('Debug - Mood State:', {
-        sessionRoll,
-        currentMood: sessionRoll,
+        sessionRoll: sessionRollNumber,
+        currentMood: sessionMoodString,
         experimentContext
       });
       
@@ -199,24 +252,31 @@ const ChatInterface = () => {
       const modelConfig = personalityConfig.availableModels.find(m => m.id === selectedModel);
       let response;
       
+      // Ensure contextualPrompt is what's sent
+      const messageToSend = contextualPrompt;
+
+      // AI services expect the mood as a number (dice roll 1-6)
+      // This matches how currentMood was used before the string conversion for state
+      const moodForAIService = sessionRollNumber;
+
       if (modelConfig.type === 'openai') {
         console.log('Debug - OpenAI Request:', {
-          message: contextualPrompt,
+          message: messageToSend,
           personality: selectedPersonality,
-          currentMood: sessionRoll
+          currentMood: moodForAIService
         });
         // Use the selected personality directly since it's already the full object
         if (!selectedPersonality) {
           throw new Error('No personality selected');
         }
-        response = await openaiService.generateResponse(contextualPrompt, selectedPersonality, sessionRoll);
+        response = await openaiService.generateResponse(messageToSend, selectedPersonality, moodForAIService);
       } else {
         console.log('Debug - Ollama Request:', {
-          message: contextualPrompt,
+          message: messageToSend,
           personality: selectedPersonality,
-          currentMood: sessionRoll
+          currentMood: moodForAIService
         });
-        response = await ollamaService.generateResponse(contextualPrompt, selectedPersonality, sessionRoll);
+        response = await ollamaService.generateResponse(messageToSend, selectedPersonality, moodForAIService);
       }
 
       const updatedMessages = [...newMessages, { text: response, sender: 'ai' }];
@@ -271,7 +331,7 @@ const ChatInterface = () => {
     <div className={styles.chatContainer}>
       <div className={styles.faceSection}>
         <AIFace 
-          initialMood={currentMood || '1'} 
+          initialMood={currentMood || '1'}
           isTalking={isLoading}
           isProcessing={isLoading}
           key={currentMood}
