@@ -1,5 +1,41 @@
 # Changelog
 
+## [2.2.0] - 2025-01-27
+
+### Added
+- **DeepSeek R1 Integration**: Full support for DeepSeek R1 8B reasoning model via Ollama
+- Added DeepSeek R1 to available models in personality.json configuration
+- Created dedicated DeepSeek integration module (src/lib/deepseek.js)
+- Enhanced model selection dropdown with DeepSeek R1 option
+- Support for tagged model versions (e.g., deepseek-r1:8b, llama3.2:3b)
+
+### Improvements
+- **Enhanced Model Management**: Fixed model loading to properly handle tagged versions
+- Improved `loadModel` function to check for models with specific tags
+- Updated `isModelLoaded` function for better model compatibility
+- Enhanced error handling for model connection and loading
+- Better model persistence and state management
+- Improved Ollama service integration with tagged model support
+
+### Technical Enhancements
+- Fixed model ID handling in Ollama service for tagged models
+- Enhanced model existence checking to support both tagged and latest versions
+- Improved model loading progress tracking
+- Better error messages for model-related issues
+- Streamlined model selection and switching
+
+### Features
+- **Local AI Reasoning**: Complete offline processing with DeepSeek R1's advanced reasoning capabilities
+- **Consciousness-Aware Prompts**: Enhanced personality system with mood-based consciousness simulation
+- **Dual Model Support**: Seamless switching between local Ollama models and cloud options
+- **Advanced Model Compatibility**: Support for various model formats and versions
+
+### Bug Fixes
+- Fixed model loading errors with tagged model versions
+- Resolved model existence checking for non-latest tagged models
+- Fixed model persistence issues across sessions
+- Improved error handling for model connection failures
+
 ## [1.7.0] - 2024-03-07
 
 ### Added

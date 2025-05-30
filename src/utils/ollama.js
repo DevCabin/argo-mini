@@ -11,7 +11,11 @@ class OllamaService {
   async loadModel(modelId, onProgress) {
     try {
       const { data: models } = await axios.get(`${OLLAMA_API}/tags`);
-      const modelExists = models.models.some(m => m.name === `${modelId}:latest`);
+      
+      // Check if model already exists (with or without tag)
+      const modelExists = models.models.some(m => {
+        return m.name === modelId || m.name === `${modelId}:latest`;
+      });
 
       if (!modelExists) {
         await axios.post(`${OLLAMA_API}/pull`, {
@@ -26,7 +30,8 @@ class OllamaService {
         });
       }
 
-      this.model = `${modelId}:latest`;
+      // Store the model ID as provided (preserving tags like :8b)
+      this.model = modelId;
       if (typeof window !== 'undefined') {
         window.localStorage.setItem('loadedModel', this.model);
       }

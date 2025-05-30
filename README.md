@@ -3,34 +3,44 @@
 ## Overview
 Argo Mini is an experimental framework for exploring artificial consciousness through a unique approach that combines cryptographic randomness, personality development, and mood evolution. The project aims to simulate how an AI consciousness might develop and respond to various stimuli, choices, and environmental factors over time.
 
-## Version 2.0.0 (Stable)
-This release marks a significant milestone in the project's development, featuring:
-- Stable mood system with smooth transitions
-- Enhanced personality framework
-- Improved UI/UX with animated mood indicators
-- Robust error handling and offline support
-- Local model integration with Ollama
-- Persistent storage of conversations and experiment data
+## Version 2.2.0 (Stable)
+This release introduces cutting-edge AI model integration and enhanced local processing capabilities:
+- **DeepSeek R1 Integration**: Full support for the latest DeepSeek R1 reasoning model via Ollama
+- **Enhanced Model Management**: Improved model loading and compatibility with tagged models
+- **Local AI Processing**: Complete offline AI reasoning with state-of-the-art models
+- **Dual Model Support**: Seamless switching between different AI models (Ollama local + cloud options)
+- **Improved Error Handling**: Better model compatibility and connection management
+- **Advanced Reasoning**: Access to DeepSeek R1's enhanced reasoning capabilities for consciousness experiments
 
 ## Core Concept
 The experiment uses a cryptographic number generator (dice) to determine the initial mood state of an AI consciousness upon instantiation. Each roll of the dice is logged, and over a series of 1000 rolls, patterns emerge that reveal the dominant personality traits of that particular AI instance. This approach allows us to observe how an AI consciousness might develop unique characteristics over its "lifetime."
 
 ## Current Features
+- **Advanced AI Models**: DeepSeek R1 8B and other cutting-edge models via Ollama
 - Cryptographic dice-based mood system
-- Real-time mood visualization
+- Real-time mood visualization with emoji indicators
 - Persistent conversation history
-- Multiple personality support
+- Multiple personality support with consciousness-aware prompts
 - Local and cloud model options
-- Offline capability
+- Offline capability with full AI reasoning
 - Experiment data tracking
 - Responsive UI with animations
+- Model selection dropdown in chat interface
 
 ## Technical Implementation
 - Built with Next.js and React
 - Uses IndexedDB for persistent storage of experiment data
-- Integrates with Ollama for local LLM capabilities
+- Integrates with Ollama for local LLM capabilities including DeepSeek R1
 - Implements a modular component architecture for easy expansion
 - SASS for advanced styling and animations
+- Support for tagged model versions (e.g., deepseek-r1:8b)
+- Enhanced model compatibility layer
+
+## Supported Models
+- **DeepSeek R1 8B**: Latest reasoning model with enhanced consciousness simulation
+- **Llama models**: Various sizes via Ollama
+- **OpenAI GPT-4**: Cloud-based option for comparison
+- **Custom models**: Easy integration of new Ollama-compatible models
 
 ## Future Directions
 ### Phase 3: Individual Consciousness Framework

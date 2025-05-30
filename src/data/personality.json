@@ -82,6 +82,13 @@
       "type": "local"
     },
     {
+      "id": "deepseek-r1:8b",
+      "name": "DeepSeek R1 (8B)",
+      "description": "Advanced reasoning model with chain-of-thought capabilities",
+      "size": "5.2GB",
+      "type": "local"
+    },
+    {
       "id": "gpt-4",
       "name": "GPT-4 Turbo",
       "description": "Most capable model (requires API key)",
